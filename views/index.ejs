@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
-    <meta charset='utf-8'>
-		<title>Samuel Camarena Caballer Website</title>
+    	<title>Samuel Camarena Caballer Website</title>
+		<meta charset='utf-8'>
 		<style>
 			body {
 				margin: 0;
@@ -12,12 +12,12 @@
 		</style>
 	</head>
 	<body>
-		<div id="WebGL-Container" ></div>
+		<div id="WebGL-Container"></div>
 		
-		<script src="../libs/three.min.js"></script>
-		<script src="../libs/TrackballControls.js"></script>
+		<script type="application/javascript" src="../libs/three.min.js"></script>
+		<script type="application/javascript" src="../libs/TrackballControls.js"></script>
 
-		<script>
+		<script type="application/javascript">
 
 			// Global variables.
 			var camera, scene, renderer, trackControls;
@@ -63,8 +63,8 @@
 				matArray.push( new THREE.MeshLambertMaterial( { color: 0xFBCD3A } ));
 				matArray.push( new THREE.MeshLambertMaterial( { color: 0xFBCD3A } ));
 				matArray.push( new THREE.MeshLambertMaterial( { color: 0xFBCD3A } ));
-				matArray.push( new THREE.MeshBasicMaterial( { map: new THREE.ImageUtils.loadTexture('under_cons_front.gif') } ));
-				matArray.push( new THREE.MeshBasicMaterial( { map: new THREE.ImageUtils.loadTexture('under_cons_back.gif') } ));
+				matArray.push( new THREE.MeshBasicMaterial( { map: new THREE.ImageUtils.loadTexture('../images/under_cons_front.gif') } ));
+				matArray.push( new THREE.MeshBasicMaterial( { map: new THREE.ImageUtils.loadTexture('../images/under_cons_back.gif') } ));
 				
 				var cubeFaceMat = new THREE.MeshFaceMaterial( matArray );
 				var cubeGeom = new THREE.BoxBufferGeometry( 100, 100, 20 ); // We transform the cube into a rhombus and then we rotate it.
