@@ -1,7 +1,6 @@
-"# personal-website"
-Samuel Camarena Caballer Personal Website.
+#Personal Website#
 
-I will use this website to introduce my self, and show some of my IT projects.
+This is my own website and I will use it to introduce my self, and show some of my IT projects.
 
 See you at http://samuelcamarena.tk
 
