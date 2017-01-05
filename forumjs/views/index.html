@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='es'>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>Forum JS</title>
+    <!-- setting external project paths -->
+    <link rel="icon" href="../forumjs/public/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/ui-lightness/jquery-ui.css">
+    <link rel="stylesheet" href="../forumjs/public/css/index.css">
+
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../forumjs/public/js/index.js"></script>
+    
+</head>
+<body>
+    <div id='all'>
+        <div id='header'>
+            <span class='cls-title'>Forum JS</span>
+            <div id='header-right'>
+                <form id="frm-login" action=""> 
+                <table border="0" id='tbl-user'>
+                <tr> 
+                    <td>User: </td> 
+                    <td><input type="text" id="txt-username"></td> 
+                </tr> 
+                <tr> 
+                    <td>Password: </td> 
+                    <td><input type="password" id="txt-password"></td> 
+                </tr> 
+                </table> 
+                <button class="cls-btn" id="btn-login" value="login">Login</button> 
+                </form>
+                <div id='div-login-error' style="visibility: hide">
+                    <p id='txt-login-error'>Error</p>
+                </div>
+            </div>
+        </div>
+        <div id='left'>
+            <div class='cls-column-header'>
+                <span class='cls-column-title'>Users list:</span>
+                <button class="cls-btn" id="btn-user" name="btn-user">New</button> 
+                </form>
+            </div>
+            <div class='cls-column-content'>
+                <ul id='ul'>
+                </ul>
+            </div>
+        </div>
+
+        <div id='right'>
+            <div class='cls-column-header'>
+                <span class='cls-column-title'>Subjets list:</span>
+                <button class="cls-btn" name="btn-subject" id="btn-subject">New</button> 
+            </div>
+            <div class='cls-column-content'>
+                <ul id='sl'>
+                </ul>
+            </div>
+        </div>
+
+        <div id='center'>
+            <div class='cls-column-header'>
+                <span id='ml-title' class='cls-column-title'>Messages list:</span>
+            </div>
+            <div class='cls-column-content'>
+                <ul id='ml'>
+                </ul>
+            </div>
+        </div>
+        <div id='footer'>
+            New message:
+            <form id="frm-message" name="frm-message" action="">
+                <textarea id="msg" autocomplete="off" cols="40" rows="2"></textarea>
+                <button class="cls-btn" id="btn-message">Send</button>
+            </form>
+        </div>
+    </div>    
+    <!-- New subject popup -->
+    <div class="cls-popup" id="dialog-new-subject" title="Start a new subject">
+        <form name="frm-subject" id="frm-subject" action="">
+            <fieldset>
+                <label for="txt-subject" class="frm-lab-new">Subject:</label>
+                <input type="text" name="txt-subject" id="txt-subject" value="" class="text ui-widget-content ui-corner-all">
+                <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+        </form>
+        <div class='cls-err-popup' id='div-err-popup'>Error</div>
+    </div>
+    <!-- new user popup -->
+    <div class="cls-popup" id="dialog-new-user" title="Create a new user">
+        <form id="frm-user" action="">
+            <fieldset>
+                <label for="txt-newuser" class="frm-lab-new">User:</label>
+                <input type="text" name="txt-newuser" id="txt-newuser" value="" class="text ui-widget-content ui-corner-all">
+                <label for="txt-pass1" class="frm-lab-new">Password:</label>
+                <input type="password" name="txt-pass1" id="txt-pass1" value="" class="text ui-widget-content ui-corner-all">
+                <label for="txt-pass2" class="frm-lab-new">Confirm password:</label>
+                <input type="password" name="txt-pass2" id="txt-pass2" value="" class="text ui-widget-content ui-corner-all">
+                <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+            </fieldset>
+        </form>
+        <div class='cls-err-popup' id='div-err-popup'>Error</div>
+    </div>
+</body>
+</html>
