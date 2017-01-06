@@ -82,14 +82,19 @@ app.get('/forumjs/', function(req, res){
 	get_page(req, res);
 });
 
+// This option will be implemented once the project structure have been completed. 
 app.get('/:page', function(req, res){
-    console.log("REQ:\n - (/:page) serving xxx\n");
-	get_page(req, res);
+    console.log('FWS:\n Wrong page request (/:page): ' + req.params.page);
+	req.params.project = 'personal-website';
+    req.params.page = 'index.html';
+    get_page(req, res);
 });
 
+// This option will be implemented once the project structure have been completed. 
 app.get('/forumjs/:page', function(req, res){
-    console.log("REQ:\n - (/forumjs/:page) serving xxx project: forumjs\n");
+    console.log('FWS:\n Wrong page request (/forumjs/:page): ' + req.params.page);
     req.params.project = 'forumjs';
+    req.params.page = 'forumjs.html';
     get_page(req, res);
 });
 
