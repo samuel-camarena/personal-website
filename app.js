@@ -51,7 +51,7 @@ function get_page(req, res) {
 
 // Called on server startup
 function on_startup() {
-    console.log('FWS:\n - Starting web server:\n --- host, port: ' + hostPort.host +':' + hostPort.port);
+    console.log('FWS:\n - Starting web server:\n --- port: ' + http.address().port);
     console.log('--- current directory: ' + __dirname);
     // Start data manager client to establish connection with the remote data manager server at (host:port).
     console.log('FWS:\n - Starting data manager client');
