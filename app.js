@@ -7,8 +7,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var dm = require('./forumjs/dmanager-client.js');
 var dataServer = require('./forumjs/dmanager-server.js');
+var dm = require('./forumjs/dmanager-client.js');
 
 var hostPort = {port: 9000, host: '127.0.0.1'}; // Default values in case of no command line arguments.
 
@@ -63,8 +63,7 @@ function on_startup() {
 app.use('/public', express.static(__dirname + '/public'));
 // Server static files from forum js external project.
 app.use('/forumjs/public', express.static(__dirname + '/forumjs/public'));
-app.use('/forumjs/views', express.static(__dirname + '/forumjs/views'));
-app.use('/forumjs', express.static(__dirname + '/forumjs'));
+//app.use('/forumjs/views', express.static(__dirname + '/forumjs/views'));
 
 // Serve static html files.
 // Serve index.html from personal website.
