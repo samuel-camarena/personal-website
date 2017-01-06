@@ -64,10 +64,12 @@ app.use('/public', express.static(__dirname + '/public'));
 // Server static files from forum js external project.
 app.use('/forumjs/public', express.static(__dirname + '/forumjs/public'));
 app.use('/forumjs/views', express.static(__dirname + '/forumjs/views'));
+app.use('/forumjs', express.static(__dirname + '/forumjs'));
 
 // Serve static html files.
 // Serve index.html from personal website.
 app.get('/', function(req, res){
+    console.log("REQ:\n - (/) serving index.html\n");
 	req.params.project = 'personal-website';
 	req.params.page = 'index.html'
 	get_page(req, res);
@@ -75,18 +77,21 @@ app.get('/', function(req, res){
 
 // Server index.html from forum js project.
 app.get('/forumjs/', function(req, res){
+    console.log("REQ:\n - (/forumjs/) serving forumjs.html\n");
 	req.params.project = 'forumjs';
 	req.params.page = 'forumjs.html';
 	get_page(req, res);
 });
 
 app.get('/:page', function(req, res){
-	//get_page(req, res);
+    console.log("REQ:\n - (/:page) serving xxx\n");
+	get_page(req, res);
 });
 
 app.get('/forumjs/:page', function(req, res){
-    //req.params.project = 'forumjs';
-    //get_page(req, res);
+    console.log("REQ:\n - (/forumjs/:page) serving xxx project: forumjs\n");
+    req.params.project = 'forumjs';
+    get_page(req, res);
 });
 
 io.on('connection', function(sock) {
