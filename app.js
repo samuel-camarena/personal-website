@@ -7,7 +7,7 @@ var dm = require('./forumjs/dmanager-client.js');
 var hostPort = {port: 9000, host: '127.0.0.1'}; // Default values in case of no command line arguments.
 
 app.set('port', (process.env.PORT || 10000));
-
+var hostPort.host = 'https://still-sea-15892.herokuapp.com/';
 /*
 // Use command line arguments to establish the Host and Port of the remote data manager server.
 switch(process.argv.length){

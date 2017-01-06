@@ -1,10 +1,14 @@
 var net = require('net');
-var dm = require ('./data-manager.js');
+var dataServer_dm = require ('./data-manager.js');
 
 // Default values in case of no command line arguments.
-var hostPort = {port: 9000, host: '127.0.0.1'};
+var dataServer_hostPort = {port: 9000, host: '127.0.0.1'};
 
+/*
+ * Live demo comment
+ */
 // Use command line arguments to establish the listening Host and Port of this remote data manager server.
+/*
 switch(process.argv.length){
     case 2: 
         console.log('DMS:\n - No command line arguments, using default host, port');        
@@ -16,9 +20,10 @@ switch(process.argv.length){
     default:
         console.log('DMS:\n - Error: wrong command line arguments (' + process.argv.length + ')');
 }
+*/
 
 // Create the server socket, on client connections, bind event handlers
-var server = net.createServer(function(socket) {
+var dataServer = net.createServer(function(socket) {
     // We have a connection, one socket object is automatically assigned to the connection
     console.log('DMS:\n - Data manager client listening on (' + socket.remoteAddress + ':' + socket.remotePort + ')');
     socket.setEncoding('utf8');
@@ -33,7 +38,7 @@ var server = net.createServer(function(socket) {
         console.log('DMS:\n - Received data manager client request:');
         for (var msg in messages) {
             console.log(' --- (', msg, ') ', messages[msg]);
-            handleData(socket, messages[msg]);
+            dataServer_handleData(socket, messages[msg]);
         }
     });
 
@@ -54,71 +59,71 @@ var server = net.createServer(function(socket) {
     });    
 });
 
-function writeData(socket, data) {
+function dataServer_writeData(socket, data) {
     data = data + '[>EOM<]';
     var success = !socket.write(data);
     if (!success) {
         (function(socket, data) {
             socket.once('drain', function() {
-                writeData(socket, data);
+                dataServer_writeData(socket, data);
             });
         })(socket, data);
     }
 }
 
-function handleData(socket, data) {
+function dataServer_handleData(socket, data) {
     var invo = JSON.parse(data);
     var reply = {what:invo.what, invoId:invo.invoId};
     
     switch (invo.what) {
         case 'get subject list': 
-            reply.obj = dm.getSubjectList();
+            reply.obj = dataServer_dm.getSubjectList();
             break;
 
         case 'get public message list': 
-            reply.obj = dm.getPublicMessageList(invo.sbj);
+            reply.obj = dataServer_dm.getPublicMessageList(invo.sbj);
             break;
 
         case 'get private message list': 
-            reply.obj = dm.getPrivateMessageList(invo.u1, invo.u2);
+            reply.obj = dataServer_dm.getPrivateMessageList(invo.u1, invo.u2);
             break;
 
         case 'get user list': 
-            reply.obj = dm.getUserList();
+            reply.obj = dataServer_dm.getUserList();
             break;
 
         case 'add user': 
-            reply.obj = dm.addUser(invo.name, invo.pass);
+            reply.obj = dataServer_dm.addUser(invo.name, invo.pass);
             break;
 
         case 'add subject': 
-            reply.obj = dm.addSubject(invo.sbj);
+            reply.obj = dataServer_dm.addSubject(invo.sbj);
             break;            
 
         case 'login': 
-            reply.obj = dm.login(invo.name, invo.pass);
+            reply.obj = dataServer_dm.login(invo.name, invo.pass);
             break;            
 
         case 'add private message': 
-            dm.addPrivateMessage(invo.msg);
+            dataServer_dm.addPrivateMessage(invo.msg);
             break;    
 
         case 'add public message': 
-            dm.addPublicMessage(invo.msg);
+            dataServer_dm.addPublicMessage(invo.msg);
             break;    
     }
-    writeData(socket, JSON.stringify(reply));
+    dataServer_writeData(socket, JSON.stringify(reply));
 }
 
-server.listen(hostPort, function() {
-    console.log('DMS:\n - Server listening on ', server.address());
+dataServer.listen(dataServer_hostPort, function() {
+    console.log('DMS:\n - Server listening on ', dataServer.address());
     
-    server.on('close', function() {
-      console.log('DMS:\n - Connection closed at server listen event');
+    dataServer.on('close', function() {
+      console.log('DMS:\n - Connection closed at data server listen event');
     });
 
-    server.on('error', function(err) {
-      console.log('DMS:\n - Connection error at server listen event\n --- ', JSON.stringify(err));
+    dataServer.on('error', function(err) {
+      console.log('DMS:\n - Connection error at data server listen event\n --- ', JSON.stringify(err));
     });
 
 });
