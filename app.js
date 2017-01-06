@@ -1,16 +1,23 @@
+/*
+ * app.js - v1.5
+ * In this app.js has been merged almost all web server functionality from personal-website and forumjs.
+ * This sever will be improved and modified as new live demo projects will be added.
+ */
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var dm = require('./forumjs/dmanager-client.js');
+var dataServer = require('./forumjs/dmanager-server.js');
 
 var hostPort = {port: 9000, host: '127.0.0.1'}; // Default values in case of no command line arguments.
 
-app.set('port', (process.env.PORT || 10000));
-var hostPort.host = 'https://still-sea-15892.herokuapp.com/';
+/*
+ * Live demo comment
+ */
 /*
 // Use command line arguments to establish the Host and Port of the remote data manager server.
-switch(process.argv.length){
+switch(process.argv.length) {
     case 2:
         console.log('FWS:\n - No command line arguments, using default host, port'); 
         break;
@@ -23,11 +30,12 @@ switch(process.argv.length){
 }
 */
 /*
- * External projects variables
+ * Live demo projects variables
  */
 var viewsdir = __dirname + '/views';
 var forumjsViewsDir = __dirname + '/forumjs/views';
 
+app.set('port', (process.env.PORT || 10000));
 app.set('views', viewsdir);
 app.set('forumjsViews', forumjsViewsDir);
 
@@ -43,9 +51,11 @@ function get_page(req, res) {
 
 // Called on server startup
 function on_startup() {
-    console.log('FWS:\n - Starting server at current directory:\n --- ' + __dirname);
+    console.log('FWS:\n - Starting web server:\n --- host, port' + hostPort.host +':' + hostPort.port);
+    console.log('--- current directory' + __dirname);
     // Start data manager client to establish connection with the remote data manager server at (host:port).
     console.log('FWS:\n - Starting data manager client');
+    //dataServer.Start();
     dm.Start(hostPort.port, hostPort.host);
 }
 
