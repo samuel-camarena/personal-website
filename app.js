@@ -63,6 +63,7 @@ function on_startup() {
 app.use('/public', express.static(__dirname + '/public'));
 // Server static files from forum js external project.
 app.use('/forumjs/public', express.static(__dirname + '/forumjs/public'));
+app.use('/forumjs/views', express.static(__dirname + '/forumjs/views'));
 
 // Serve static html files.
 // Serve index.html from personal website.
