@@ -7,8 +7,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var dm = require('./forumjs/dmanager-client.js');
 var dataServer = require('./forumjs/dmanager-server.js');
+var dm = require('./forumjs/dmanager-client.js');
 
 var hostPort = {port: 9000, host: '127.0.0.1'}; // Default values in case of no command line arguments.
 
@@ -35,7 +35,7 @@ switch(process.argv.length) {
 var viewsdir = __dirname + '/views';
 var forumjsViewsDir = __dirname + '/forumjs/views';
 
-app.set('port', (process.env.PORT || 10000));
+app.set('port', (process.env.PORT || 80 || 10000));
 app.set('views', viewsdir);
 app.set('forumjsViews', forumjsViewsDir);
 
@@ -183,6 +183,6 @@ io.on('connection', function(sock) {
 });
 
 // Listen for connections.
-http.listen(10000, on_startup);
+http.listen(process.env.PORT || 80 || 10000, on_startup);
 
 
