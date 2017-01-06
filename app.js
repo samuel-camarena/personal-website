@@ -75,17 +75,17 @@ app.get('/', function(req, res){
 // Server index.html from forum js project.
 app.get('/forumjs/', function(req, res){
 	req.params.project = 'forumjs';
-	req.params.page = 'index.html';
+	req.params.page = 'forumjs.html';
 	get_page(req, res);
 });
 
 app.get('/:page', function(req, res){
-	get_page(req, res);
+	//get_page(req, res);
 });
 
 app.get('/forumjs/:page', function(req, res){
-    req.params.project = 'forumjs';
-    get_page(req, res);
+    //req.params.project = 'forumjs';
+    //get_page(req, res);
 });
 
 io.on('connection', function(sock) {
