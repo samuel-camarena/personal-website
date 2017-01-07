@@ -68,7 +68,7 @@ app.use('/forumjs/public', express.static(__dirname + '/forumjs/public'));
 // Serve static html files.
 // Serve index.html from personal website.
 app.get('/', function(req, res){
-    console.log("REQ:\n - (/) serving index.html\n");
+    console.log("REQ:\n - (/) serving index.html\n --- URL original: " + req.originalUrl + '\n');
 	req.params.project = 'personal-website';
 	req.params.page = 'index.html'
 	get_page(req, res);
