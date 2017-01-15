@@ -1,15 +1,13 @@
 var net = require('net');
 
 var client = new net.Socket();
-var hostPort = {};
 var callbacks = {}; // Hash of callbacks. Key is invoId
 var invoCounter = 0; // Current invocation number is key to access 'callbacks'.
 
 exports.Start = function (port, host, cb) {
-	hostPort.port = port;
-	hostPort.host = host;
-	client.connect(hostPort, function() {
-    	console.log('DMC:\n - Connected to: ' + hostPort.host + ':' + hostPort.port);
+	
+	client.connect({port: port, host: host}, function() {
+    	console.log('DMC:\n - Connected to: ' + host + ':' + port);
     	this.setEncoding('utf8');
     	if (cb != null) cb();
 	});
@@ -83,7 +81,7 @@ function handleData(data) {
 		case 'add private message':
 		case 'add public message':
 			callbacks[reply.invoId](); // call the stored callback, no arguments
-			delete callbacks [reply.invoId]; // remove from hash
+			delete callbacks[reply.invoId]; // remove from hash
 			break;
 				
 		default:

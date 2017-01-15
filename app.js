@@ -7,8 +7,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var dataServer = require('./forumjs/dmanager-server.js');
-var dm = require('./forumjs/dmanager-client.js');
+var dmServer = require('./forumjs/dmanager-server.js');
+var dmClient = require('./forumjs/dmanager-client.js');
 
 var hostPort = {port: 9000, host: '127.0.0.1'}; // Default values in case of no command line arguments.
 
@@ -52,11 +52,11 @@ function get_page(req, res) {
 // Called on server startup
 function on_startup() {
     console.log('FWS:\n - Starting web server:\n --- port: ' + http.address().port);
-    console.log('--- current directory: ' + __dirname);
+    console.log(' --- current directory: ' + __dirname);
     // Start data manager client to establish connection with the remote data manager server at (host:port).
     console.log('FWS:\n - Starting data manager client');
     //dataServer.Start();
-    dm.Start(hostPort.port, hostPort.host);
+    dmClient.Start(hostPort.port, hostPort.host);
 }
 
 // Serve static files such as css, images, javascript
@@ -111,11 +111,11 @@ io.on('connection', function(sock) {
         var msg = JSON.parse(msgStr);
         msg.ts = new Date(); // timestamp
         if (msg.isPrivate) {
-            dm.addPrivateMessage(msg, function () {
+            dmClient.addPrivateMessage(msg, function () {
                 io.emit('message', JSON.stringify(msg));
             });
         } else {
-            dm.addPublicMessage(msg, function () {
+            dmClient.addPublicMessage(msg, function () {
                 io.emit('message', JSON.stringify(msg));
             });
         }
@@ -123,7 +123,7 @@ io.on('connection', function(sock) {
 
     // New subject added to storage, and broadcasted
     sock.on('new subject', function(sbj) {
-        dm.addSubject(sbj, function(id) {
+        dmClient.addSubject(sbj, function(id) {
             console.log('FWS: - Event: new subject: ' + sbj + '-->' + id);
             if (id == -1) {
                 sock.emit('new subject', 'err', 'Subject already exists', sbj);
@@ -136,7 +136,7 @@ io.on('connection', function(sock) {
 
     // New subject added to storage, and broadcasted
     sock.on('new user', function(usr, pas) {
-        dm.addUser(usr, pas, function(exists) {
+        dmClient.addUser(usr, pas, function(exists) {
             console.log('FWS: - Event: new user: ' + usr + '(' + pas + ')');
             if (exists) {
                 sock.emit('new user', 'err', usr, 'User already exists');
@@ -149,7 +149,7 @@ io.on('connection', function(sock) {
 
     // Client ask for current user list
     sock.on('get user list', function() {
-        dm.getUserList(function (list) {
+        dmClient.getUserList(function (list) {
             console.log('FWS: - Event: get user list');  		
             sock.emit('user list', list);
         });
@@ -157,7 +157,7 @@ io.on('connection', function(sock) {
 
     // Client ask for current subject list
     sock.on('get subject list', function() {
-        dm.getSubjectList(function(list) {
+        dmClient.getSubjectList(function(list) {
             console.log('FWS: - Event: get subject list');  		
             sock.emit('subject list', list);
         });
@@ -167,11 +167,11 @@ io.on('connection', function(sock) {
     sock.on('get message list', function(from, to, isPriv) {
         console.log('FWS: - Event: get message list: ' + from + ':' + to + '(' + isPriv + ')');  		
         if (isPriv) {
-            dm.getPrivateMessageList(from, to, function (list) {
+            dmClient.getPrivateMessageList(from, to, function (list) {
                 sock.emit('message list', from, to, isPriv, list);
             });
         } else {
-            dm.getPublicMessageList(to, function (list) {
+            dmClient.getPublicMessageList(to, function (list) {
                 sock.emit('message list', from, to, isPriv, list);
             });
         }
@@ -180,7 +180,7 @@ io.on('connection', function(sock) {
     // Client authenticates
     sock.on('login', function(u,p) {
         console.log('FWS: - Event: user logs in');  		
-        dm.login (u, p, function(ok) {
+        dmClient.login(u, p, function(ok) {
             if (!ok) {
                 console.log('FWS: - Logging error, wrong credentials: ' + u + '(' + p + ')');
                 sock.emit('login', 'err', 'Wrong credentials');

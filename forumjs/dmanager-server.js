@@ -1,8 +1,8 @@
 var net = require('net');
-var dataServer_dm = require ('./data-manager.js');
+var dm = require ('./data-manager.js');
 
 // Default values in case of no command line arguments.
-var dataServer_hostPort = {port: 9000, host: '127.0.0.1'};
+var hostPort = {port: 9000, host: '127.0.0.1'};
 
 /*
  * Live demo comment
@@ -38,7 +38,7 @@ var dataServer = net.createServer(function(socket) {
         console.log('DMS:\n - Received data manager client request:');
         for (var msg in messages) {
             console.log(' --- (', msg, ') ', messages[msg]);
-            dataServer_handleData(socket, messages[msg]);
+            handleData(socket, messages[msg]);
         }
     });
 
@@ -59,63 +59,63 @@ var dataServer = net.createServer(function(socket) {
     });    
 });
 
-function dataServer_writeData(socket, data) {
+function writeData(socket, data) {
     data = data + '[>EOM<]';
     var success = !socket.write(data);
     if (!success) {
         (function(socket, data) {
             socket.once('drain', function() {
-                dataServer_writeData(socket, data);
+                writeData(socket, data);
             });
         })(socket, data);
     }
 }
 
-function dataServer_handleData(socket, data) {
+function handleData(socket, data) {
     var invo = JSON.parse(data);
     var reply = {what:invo.what, invoId:invo.invoId};
     
     switch (invo.what) {
         case 'get subject list': 
-            reply.obj = dataServer_dm.getSubjectList();
+            reply.obj = dm.getSubjectList();
             break;
 
         case 'get public message list': 
-            reply.obj = dataServer_dm.getPublicMessageList(invo.sbj);
+            reply.obj = dm.getPublicMessageList(invo.sbj);
             break;
 
         case 'get private message list': 
-            reply.obj = dataServer_dm.getPrivateMessageList(invo.u1, invo.u2);
+            reply.obj = dm.getPrivateMessageList(invo.u1, invo.u2);
             break;
 
         case 'get user list': 
-            reply.obj = dataServer_dm.getUserList();
+            reply.obj = dm.getUserList();
             break;
 
         case 'add user': 
-            reply.obj = dataServer_dm.addUser(invo.name, invo.pass);
+            reply.obj = dm.addUser(invo.name, invo.pass);
             break;
 
         case 'add subject': 
-            reply.obj = dataServer_dm.addSubject(invo.sbj);
+            reply.obj = dm.addSubject(invo.sbj);
             break;            
 
         case 'login': 
-            reply.obj = dataServer_dm.login(invo.name, invo.pass);
+            reply.obj = dm.login(invo.name, invo.pass);
             break;            
 
         case 'add private message': 
-            dataServer_dm.addPrivateMessage(invo.msg);
+            dm.addPrivateMessage(invo.msg);
             break;    
 
         case 'add public message': 
-            dataServer_dm.addPublicMessage(invo.msg);
+            dm.addPublicMessage(invo.msg);
             break;    
     }
-    dataServer_writeData(socket, JSON.stringify(reply));
+    writeData(socket, JSON.stringify(reply));
 }
 
-dataServer.listen(dataServer_hostPort, function() {
+dataServer.listen(hostPort, function() {
     console.log('DMS:\n - Server listening on ', dataServer.address());
     
     dataServer.on('close', function() {
@@ -125,5 +125,4 @@ dataServer.listen(dataServer_hostPort, function() {
     dataServer.on('error', function(err) {
       console.log('DMS:\n - Connection error at data server listen event\n --- ', JSON.stringify(err));
     });
-
 });
