@@ -1,8 +1,8 @@
-#Forum JS#
+# Forum JS
 
 This project is aimed to practice about distributed services and applications. It is a forum fully developed on javascript, as it provides the posibility to implements functionality, in a dynamic manner in both client and server side. The project is divided in three main sections: client side, web server and data server. 
 
-##Development technologies:##
+## Development technologies:
 
 ###Frontend:###
 * HTML5
