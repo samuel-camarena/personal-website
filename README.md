@@ -10,3 +10,16 @@ Best regards.
 [Forumjs](https://github.com/samuelcamarena/forumjs) - It is a project aimed to practice about distributed services and applications. It is a forum fully developed on JavaScript, which provides the possibility to implement functionality in a dynamic manner, in both, client and server side. The project is divided in three main sections: client side, web server and data server.  
 
 [Forumjs live demo](http://website-samuelcamarena.herokuapp.com/forumjs/)
+Please consider the below factors while contributing
+Code Style:
+Maintain a consistent code style for readability.
+Documentation:
+Ensure well-documented code for effective collaboration.
+Testing:
+Thoroughly test your changes before submitting a pull request.
+Issue Tracker:
+Check the Issue Tracker for tasks.
+Code Review:
+All contributions undergo a code review process.
+Licensing:
+
